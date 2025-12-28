@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {
     "server": "mgon-serve",
+    "postinstall": "node -e \"const fs=require('fs'); const f='node_modules/@mathigon/studio/server/serve.ts'; let c=fs.readFileSync(f,'utf8'); c=c.replace('.listen(process.env.PORT || 5000)','.listen(parseInt(process.env.PORT||\\\"5000\\\",10))'); fs.writeFileSync(f,c);\"",
     "assets": "mgon-build --assets --locales en",
     "watch": "mgon-build --assets --watch --locales en",
     "start": "npm-run-all --parallel watch server",
