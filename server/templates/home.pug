@@ -1,0 +1,222 @@
+include ../../node_modules/@mathigon/studio/server/templates/_mixins
+
+- var title = config.siteName;
+
+doctype html
+html(lang=locale.id dir=(locale.dir || 'ltr'))
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    title= title
+    meta(name="description" content=config.description)
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="theme-color" content="#181824")
+    link(rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32.png")
+    link(href=cacheBust('/main.css') rel='stylesheet')
+    style.
+      * { box-sizing: border-box; }
+
+      .home-header {
+        text-align: center;
+        padding: 60px 20px 0 20px;
+        background: linear-gradient(135deg, #2274E8 0%, #8032AD 100%);
+        color: white;
+      }
+      .home-header h1 {
+        font-size: 2.8em;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+      .home-header .subtitle {
+        font-size: 1.3em;
+        opacity: 0.95;
+        max-width: 800px;
+        margin: 0 auto 30px auto;
+      }
+
+      .tabs-nav {
+        display: flex;
+        justify-content: center;
+        background: rgba(0,0,0,0.3);
+        padding: 0;
+        margin: 0;
+      }
+      .tab-btn {
+        background: transparent;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        padding: 15px 30px;
+        font-size: 1.05em;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-bottom: 3px solid transparent;
+      }
+      .tab-btn:hover {
+        color: white;
+        background: rgba(255,255,255,0.1);
+      }
+      .tab-btn.active {
+        color: white;
+        background: rgba(255,255,255,0.15);
+        border-bottom-color: white;
+      }
+
+      .container {
+        max-width: 1000px !important;
+        width: 100% !important;
+        margin: 0 auto;
+        padding: 40px 30px;
+      }
+
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      .course {
+        border-top: 1px solid #e8e8e8 !important;
+        padding: 20px 10px 20px 100px !important;
+        position: relative !important;
+        min-height: 90px !important;
+        column-count: 2 !important;
+        column-gap: 20px !important;
+      }
+      .course:first-of-type {
+        border-top: none !important;
+      }
+
+      .course .course-img {
+        width: 80px !important;
+        height: 80px !important;
+        border-radius: 8px !important;
+        background-size: cover !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        position: absolute !important;
+        left: 0 !important;
+        top: 20px !important;
+      }
+
+      .course h3 {
+        margin: 0 0 12px 8px !important;
+        padding: 0 !important;
+        font-size: 1.2em !important;
+        font-weight: 600 !important;
+        column-span: all !important;
+      }
+
+      .course-section {
+        display: block !important;
+        padding: 7px 8px 7px 34px !important;
+        color: #444 !important;
+        text-decoration: none !important;
+        font-size: 1em !important;
+        line-height: 1.3 !important;
+        border-radius: 4px !important;
+        break-inside: avoid !important;
+      }
+      .course-section:hover {
+        background: #f5f5f5 !important;
+      }
+      .course-section x-progress {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin: 0 6px -4px -26px !important;
+      }
+
+      .home-footer {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+        border-top: 1px solid #eee;
+        margin-top: 60px;
+      }
+
+      html[theme="dark"] .niveau-section {
+        background: #2a2a3a;
+      }
+      html[theme="dark"] .course {
+        background: #1e1e2e !important;
+      }
+      html[theme="dark"] .course h3 {
+        background: #252535 !important;
+        border-bottom-color: #3a3a4a !important;
+      }
+      html[theme="dark"] .niveau-description {
+        color: #aaa;
+      }
+      html[theme="dark"] .course-section {
+        color: #ddd !important;
+        background: #1e1e2e !important;
+        border-bottom-color: #3a3a4a !important;
+      }
+      html[theme="dark"] .course-section:hover {
+        background: #2a2a4a !important;
+      }
+
+      @media (max-width: 900px) {
+        .courses-grid {
+          grid-template-columns: 1fr !important;
+        }
+        .container {
+          padding: 20px !important;
+        }
+        .niveau-section {
+          padding: 25px !important;
+        }
+      }
+
+  body
+    header
+      a#logo(href="/" title=config.siteName)
+        include ../../node_modules/@mathigon/studio/frontend/assets/images/logo.svg
+
+    main
+      .home-header
+        h1 Mathigon Collège
+        p.subtitle Cours interactifs de mathématiques pour le collège français
+        .tabs-nav
+          button.tab-btn.active(data-tab="geometrie") Géométrie
+          button.tab-btn(data-tab="nombres") Nombres et algèbre
+          button.tab-btn(data-tab="proba") Probabilités et statistiques
+          button.tab-btn(data-tab="decouverte") Découverte
+
+      .container
+        #geometrie.tab-content.active
+          +course('shapes')
+          +course('circles')
+          +course('polygons')
+          +course('polyhedra')
+          +course('triangles')
+          +course('transformations')
+
+        #nombres.tab-content
+          +course('divisibility')
+          +course('linear-functions')
+
+        #proba.tab-content
+          +course('probability')
+          +course('statistics')
+
+        #decouverte.tab-content
+          +course('fractals')
+          +course('graph-theory')
+
+        .home-footer
+          p Propulsé par Mathigon — Mathématiques interactives pour tous
+
+    script(src=cacheBust('/polyfill.js'))
+    script(src=cacheBust('/main.js'))
+    script.
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Remove active from all buttons and contents
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          // Add active to clicked button and corresponding content
+          btn.classList.add('active');
+          document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+      });

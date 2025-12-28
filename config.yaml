@@ -1,0 +1,33 @@
+siteName: Mathigon Collège
+description: Cours interactifs de mathématiques pour le collège
+domain: mathigon.org
+port: 3000
+
+privacyURL: https://amplify.com/customer-privacy
+banner: (c) Mathigon
+locales: [fr, en]
+defaultLocale: fr
+
+search:
+  enabled: false
+
+footer:
+  rows:
+    - links:
+        - title: GitHub
+          url: https://github.com/mathigon/textbooks
+        - title: Live Website
+          url: https://mathigon.org/courses
+  copyright: © Mathigon, 2022
+
+social:
+  facebook: {}
+  twitter: {}
+
+courses:
+  showLocked: true
+  revealAll: false
+  audio: false
+
+tutor:
+  enabled: true

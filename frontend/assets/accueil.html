@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maths Interactives - College</title>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-6eme: #22ab24;
+      --blue-5eme: #0f82f2;
+      --orange-4eme: #fd8c00;
+      --pink-3eme: #cd0e66;
+      --bg-dark: #181824;
+      --bg-card: #242436;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Sans Pro', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-card);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #22ab24, #0f82f2, #fd8c00, #cd0e66);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: #888;
+      font-size: 1.2rem;
+    }
+
+    /* Niveau tabs */
+    .niveau-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .niveau-tab {
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      border: 2px solid transparent;
+      background: var(--bg-card);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .niveau-tab:hover, .niveau-tab.active {
+      transform: scale(1.05);
+    }
+
+    .niveau-tab.sixieme { border-color: var(--green-6eme); }
+    .niveau-tab.sixieme:hover, .niveau-tab.sixieme.active { background: var(--green-6eme); }
+    .niveau-tab.cinquieme { border-color: var(--blue-5eme); }
+    .niveau-tab.cinquieme:hover, .niveau-tab.cinquieme.active { background: var(--blue-5eme); }
+    .niveau-tab.quatrieme { border-color: var(--orange-4eme); }
+    .niveau-tab.quatrieme:hover, .niveau-tab.quatrieme.active { background: var(--orange-4eme); }
+    .niveau-tab.troisieme { border-color: var(--pink-3eme); }
+    .niveau-tab.troisieme:hover, .niveau-tab.troisieme.active { background: var(--pink-3eme); }
+
+    /* Courses grid */
+    .courses-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+    }
+
+    .niveau-section {
+      margin-bottom: 3rem;
+    }
+
+    .niveau-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-left: 1rem;
+      border-left: 4px solid;
+    }
+
+    .niveau-section.sixieme h2 { border-color: var(--green-6eme); color: var(--green-6eme); }
+    .niveau-section.cinquieme h2 { border-color: var(--blue-5eme); color: var(--blue-5eme); }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Course card */
+    .course-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .course-header {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .course-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .course-body {
+      padding: 1.2rem;
+    }
+
+    .course-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .badge.new { background: var(--green-6eme); }
+    .badge.enrichissement { background: #8b5cf6; }
+    .badge.avance { background: var(--orange-4eme); }
+
+    .course-desc {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .course-sections {
+      list-style: none;
+    }
+
+    .course-sections li {
+      padding: 0.5rem 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .course-sections li:first-child {
+      border-top: none;
+    }
+
+    .course-sections a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+      flex: 1;
+    }
+
+    .course-sections a:hover {
+      color: #fff;
+    }
+
+    .section-badge {
+      font-size: 0.6rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      background: rgba(139, 92, 246, 0.3);
+      color: #a78bfa;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--bg-card);
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #0f82f2;
+      text-decoration: none;
+    }
+
+    /* Legende */
+    .legende {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      padding: 1rem 2rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .legende-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #888;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+        <path d="m17 31v-12l-12 12z" fill="#fd8c00"/>
+        <path d="m4 4.5v13 13l13-13z" fill="#cd0e66"/>
+        <path d="m31 5-12 12h12" fill="#22ab24"/>
+        <path d="m31 18h-13v13h13" fill="#0f82f2"/>
+      </svg>
+      Maths College
+    </a>
+  </header>
+
+  <div class="hero">
+    <h1>Maths Interactives</h1>
+    <p>Cours interactifs adaptes au programme du college francais</p>
+  </div>
+
+  <div class="legende">
+    <div class="legende-item">
+      <span class="badge new">Nouveau</span>
+      <span>Cours traduit recemment</span>
+    </div>
+    <div class="legende-item">
+      <span class="badge enrichissement">Enrichissement</span>
+      <span>Contenu hors programme (pour aller plus loin)</span>
+    </div>
+    <div class="legende-item">
+      <span class="section-badge">Avance</span>
+      <span>Section au-dela du programme</span>
+    </div>
+  </div>
+
+  <div class="courses-container">
+
+    <!-- 6EME -->
+    <div class="niveau-section sixieme">
+      <h2>6eme - Sixieme</h2>
+      <div class="courses-grid">
+
+        <!-- Divisibilite -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #1AA845 0%, #0d7a2d 100%);">
+            <div class="course-icon" style="background-color: #1AA845; background-image: url(/content/divisibility/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">
+              Divisibilite
+              <span class="badge new">Nouveau</span>
+            </div>
+            <p class="course-desc">Multiples, diviseurs et nombres premiers</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #1AA845;"></span>
+                <a href="/course/divisibility/factors-and-multiples">Facteurs et Multiples</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #1AA845;"></span>
+                <a href="/course/divisibility/rules">Regles de Divisibilite</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #1AA845;"></span>
+                <a href="/course/divisibility/primes">Nombres Premiers</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Aires et Formes -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #0F82F2 0%, #0a5cad 100%);">
+            <div class="course-icon" style="background-color: #0F82F2; background-image: url(/content/shapes/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">
+              Aires et Formes
+              <span class="badge new">Nouveau</span>
+            </div>
+            <p class="course-desc">Perimetres, aires et formules</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #0F82F2;"></span>
+                <a href="/course/shapes/introduction">Perimetre et Aire</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #0F82F2;"></span>
+                <a href="/course/shapes/rectangles">Rectangles et Carres</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #0F82F2;"></span>
+                <a href="/course/shapes/triangles">Triangles</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #0F82F2;"></span>
+                <a href="/course/shapes/circles">Cercles</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Symetrie -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #EB4726 0%, #b8351b 100%);">
+            <div class="course-icon" style="background-color: #EB4726; background-image: url(/content/transformations/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">Symetrie</div>
+            <p class="course-desc">Symetrie axiale et transformations</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/introduction">Introduction</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/symmetry">Symetrie axiale</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/wallpaper-groups">Pavages</a>
+                <span class="section-badge">Avance</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Cercles -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #5A49C9 0%, #433797 100%);">
+            <div class="course-icon" style="background-color: #5A49C9; background-image: url(/content/circles/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">Cercles et Pi</div>
+            <p class="course-desc">Perimetre et aire du cercle</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #5A49C9;"></span>
+                <a href="/course/circles/introduction">Introduction</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #5A49C9;"></span>
+                <a href="/course/circles/radians">Degres et radians</a>
+                <span class="section-badge">Avance</span>
+              </li>
+              <li>
+                <span class="dot" style="background: #5A49C9;"></span>
+                <a href="/course/circles/spheres-cones-cylinders">Volumes (4eme)</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 5EME -->
+    <div class="niveau-section cinquieme">
+      <h2>5eme - Cinquieme</h2>
+      <div class="courses-grid">
+
+        <!-- Triangles -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #3566DE 0%, #2648a6 100%);">
+            <div class="course-icon" style="background-color: #3566DE; background-image: url(/content/triangles/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">
+              Triangles
+              <span class="badge new">Nouveau</span>
+            </div>
+            <p class="course-desc">Proprietes, construction et theoremes</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/introduction">Introduction</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/properties">Proprietes des triangles</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/congruence">Congruence</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/isosceles-and-equilateral">Isoceles et equilateraux</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/properties#medians">Medianes et centre de gravite</a>
+                <span class="section-badge">Avance</span>
+              </li>
+              <li>
+                <span class="dot" style="background: #3566DE;"></span>
+                <a href="/course/triangles/pythagoras">Pythagore (4eme)</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Symetrie centrale -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #EB4726 0%, #b8351b 100%);">
+            <div class="course-icon" style="background-color: #EB4726; background-image: url(/content/transformations/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">Transformations</div>
+            <p class="course-desc">Symetrie centrale et transformations</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/rigid-transformations">Transformations rigides</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/congruence">Congruence</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/dilations">Agrandissement (3eme)</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #EB4726;"></span>
+                <a href="/course/transformations/similarity">Thales (3eme)</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Polyedres -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #31B304 0%, #238302 100%);">
+            <div class="course-icon" style="background-color: #31B304; background-image: url(/content/polyhedra/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">Polyedres</div>
+            <p class="course-desc">Solides et volumes</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #31B304;"></span>
+                <a href="/course/polyhedra/introduction">Introduction</a>
+              </li>
+              <li>
+                <span class="dot" style="background: #31B304;"></span>
+                <a href="/course/polyhedra/platonic">Solides de Platon</a>
+                <span class="section-badge">Avance</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ENRICHISSEMENT -->
+    <div class="niveau-section" style="opacity: 0.8;">
+      <h2 style="border-color: #8b5cf6; color: #8b5cf6;">Enrichissement (hors programme)</h2>
+      <div class="courses-grid">
+
+        <!-- Fractales -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+            <div class="course-icon" style="background-color: #6366f1; background-image: url(/content/fractals/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">
+              Fractales
+              <span class="badge enrichissement">Enrichissement</span>
+            </div>
+            <p class="course-desc">Formes infiniment complexes</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #6366f1;"></span>
+                <a href="/course/fractals/introduction">Introduction</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Graphes -->
+        <div class="course-card">
+          <div class="course-header" style="background: linear-gradient(135deg, #FD8C00 0%, #c46d00 100%);">
+            <div class="course-icon" style="background-color: #FD8C00; background-image: url(/content/graph-theory/icon.png);"></div>
+          </div>
+          <div class="course-body">
+            <div class="course-title">
+              Theorie des Graphes
+              <span class="badge enrichissement">Enrichissement</span>
+            </div>
+            <p class="course-desc">Reseaux et connexions</p>
+            <ul class="course-sections">
+              <li>
+                <span class="dot" style="background: #FD8C00;"></span>
+                <a href="/course/graph-theory/introduction">Introduction</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Base sur <a href="https://mathigon.org" target="_blank">Mathigon</a> - Open Source (MIT)</p>
+    <p>Adapte pour le programme du college francais</p>
+  </footer>
+
+</body>
+</html>
