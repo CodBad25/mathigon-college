@@ -32,7 +32,6 @@ node_modules/
 .eslintcache
 
 # Build and Test Outputs
-public
 screenshots
 _*.yaml
 
