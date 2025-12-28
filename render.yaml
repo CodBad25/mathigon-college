@@ -3,7 +3,8 @@ services:
     name: mathigon-college
     env: node
     plan: free
-    buildCommand: npm install && npm run build
+    nodeVersion: "20"
+    buildCommand: npm install && npm run postinstall && npm run build
     startCommand: npm run server
     envVars:
       - key: NODE_ENV
